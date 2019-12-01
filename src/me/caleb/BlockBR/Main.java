@@ -22,6 +22,7 @@ public class Main extends JavaPlugin{
 		mysqlSetup();
 		loadConfig();
 		new BlockMeta(this);
+		new BlockBR(this);
 	}
 	
 	public void loadConfig() {

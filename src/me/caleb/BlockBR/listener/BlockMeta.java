@@ -13,11 +13,13 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 
+import me.caleb.BlockBR.BlockBR;
 import me.caleb.BlockBR.Main;
 
 public class BlockMeta implements Listener{
 
 	private Main plugin;
+	boolean isNatural;
 	
 	public BlockMeta(Main plugin) {
 		this.plugin = plugin;
@@ -42,10 +44,14 @@ public class BlockMeta implements Listener{
 		Block block = event.getBlock();
 		
 		if(block.hasMetadata("PLACED") || block.hasMetadata("FORMED")) {
-			player.sendMessage("This block has been placed or formed!");
+			//If it's not natural
+			BlockBR.ifNatural(false);
 		}else {
-			player.sendMessage("This block has not been placed or formed!");
+			//If it is natural
+			BlockBR.insertPlayer(player,block);
+			BlockBR.ifNatural(true);
 		}
+		
 	}
 	
 	/*
@@ -58,7 +64,8 @@ public class BlockMeta implements Listener{
 	 */
 	@EventHandler
 	public void onBlockForm(BlockFormEvent event) {
-		Bukkit.getConsoleSender().sendMessage("A block has been formed!");
+		
+		//Bukkit.getConsoleSender().sendMessage("A block has been formed!");
 		Block block = event.getBlock();
 		// Makes a new metadata value called formed
 		block.setMetadata("FORMED", new FixedMetadataValue(plugin,true));
