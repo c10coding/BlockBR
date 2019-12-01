@@ -4,3 +4,39 @@ Port: 3306
 Database: "serverpro_db"
 Username: "root"
 Password: "Krni7YlzOK843lx"
+
+
+
+#Initial Values
+#
+# If you change these values, it will affect the rest of the values for the rest of the levels
+#
+GrassValue: 750
+LogValue: 500
+StoneValue: 750
+CoalValue: 500
+IronValue: 200
+RedstoneValue: 100
+LapisValue: 30
+GoldValue: 15
+ObsidianValue: 10
+DiamondValue: 6
+EmeraldValue: 1
+
+
+#Multipliers
+#
+# If you change these values, it will affect levels 2 and on
+#
+
+GrassMult: 2
+LogMult: 1.5
+StoneMult: 2
+CoalMult: 1.5
+IronMult: 1.2
+RedstoneMult: 1.25
+LapisMult: 1.25
+GoldMult: 1.15
+ObsidianMult: 1.1
+DiamondMult: 1.05
+EmeraldMult: 1.01
