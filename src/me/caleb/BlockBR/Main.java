@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import me.caleb.BlockBR.listener.BlockMeta;
 import me.caleb.BlockBR.utils.Chat;
 
 
@@ -20,6 +21,7 @@ public class Main extends JavaPlugin{
 	public void onEnable() {
 		mysqlSetup();
 		loadConfig();
+		new BlockMeta(this);
 	}
 	
 	public void loadConfig() {
