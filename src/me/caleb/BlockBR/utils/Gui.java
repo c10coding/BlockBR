@@ -82,7 +82,7 @@ public class Gui implements Listener, InventoryHolder{
 		setMatTier(tier);
 		
         inv.addItem(createGuiItem(matTier, Chat.chat("&lCurrent Tier"), "Your current tier is " + Chat.chat("&6" + tier.toUpperCase()), "The amount you must reach to get to the next tier is " + (int) threshold));
-        inv.addItem(createGuiItem(Material.IRON_PICKAXE, "Amount mined on current tier", Chat.chat("&lAmount: " + amount), ""));
+        inv.addItem(createGuiItem(Material.IRON_PICKAXE, "Amount mined on current tier", Chat.chat("&lAmount: " + amount)));
     }
 	
 	public void openInventory(Player p) {

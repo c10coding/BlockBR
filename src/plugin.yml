@@ -2,3 +2,4 @@ name: BlockBR
 version: 1.0
 main: me.caleb.BlockBR.Main
 author: Caleb Owens
+api-version: 1.13
