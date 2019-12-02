@@ -4,84 +4,42 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.Map;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
+import org.bukkit.FireworkEffect;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.meta.FireworkMeta;
 
 import me.caleb.BlockBR.utils.Chat;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 
-public class BlockBR {
+public class BlockBR{
 	
-	private static Player player;
+	public static Player player;
 	private static Block block;
 	private static Main plugin;
+	public static double threshold;
+	public static int amount;
 	
 	private static int level;
 	private static String tier;
 	private static String logList[] = {"Log_1","Log_2","Log_3","Log_4","Log_5","Log_6"};
+	private static String tierList[] = {"grass","log","stone","coal","redstone","lapis","iron","gold","obsidian","diamond","emerald"};
+ 	private static int grassValue, logValue, stoneValue, coalValue, redstoneValue, lapisValue, ironValue, goldValue, obsidianValue, diamondValue, emeraldValue;
+	private static double grassMult, logMult, stoneMult, coalMult, redstoneMult, lapisMult, ironMult, goldMult, obsidianMult, diamondMult, emeraldMult;
+	private static HashMap<String, Integer> tierValues = new HashMap<String, Integer>();
+	private static HashMap<String, Double> multValues = new HashMap<String, Double>();
 	
-	/*
-	private static int grassValue = plugin.getConfig().getInt("GrassValue");
-	private static int logValue = plugin.getConfig().getInt("LogValue");
-	private static int stoneValue = plugin.getConfig().getInt("StoneValue");
-	private static int coalValue = plugin.getConfig().getInt("CoalValue");
-	private static int ironValue = plugin.getConfig().getInt("IronValue");
-	private static int redstoneValue = plugin.getConfig().getInt("RedstoneValue");
-	private static int lapisValue = plugin.getConfig().getInt("LapisValue");
-	private static int goldValue = plugin.getConfig().getInt("GoldValue");
-	private static int obsidianValue = plugin.getConfig().getInt("ObsidianValue");
-	private static int diamondValue = plugin.getConfig().getInt("DiamondValue");
-	private static int emeraldValue = plugin.getConfig().getInt("EmeraldValue");
-	
-	private static int grassMult = plugin.getConfig().getInt("GrassMult");
-	private static int logMult = plugin.getConfig().getInt("LogMult");
-	private static int stoneMult = plugin.getConfig().getInt("StoneMult");
-	private static int coalMult = plugin.getConfig().getInt("CoalMult");
-	private static int ironMult = plugin.getConfig().getInt("IronMult");
-	private static int redstoneMult = plugin.getConfig().getInt("RedstoneMult");
-	private static int lapisMult = plugin.getConfig().getInt("LapisMult");
-	private static int goldMult = plugin.getConfig().getInt("GoldMult");
-	private static int obsidianMult = plugin.getConfig().getInt("ObsidianMult");
-	private static int diamondMult = plugin.getConfig().getInt("DiamondMult");
-	private static int emeraldMult = plugin.getConfig().getInt("EmeraldMult");
-	
-	//Level 1 values
-	private final static int initValues[] = {grassValue,logValue,stoneValue,coalValue,ironValue,redstoneValue,lapisValue,goldValue,obsidianValue,diamondValue,emeraldValue};
-	//Multipliers
-	private final static double multValues[] = {grassMult,logMult,stoneMult,coalMult,ironMult,redstoneMult,lapisMult,goldMult,obsidianMult,diamondMult,emeraldMult};
-	*/
 	public BlockBR(Main plugin) {
 		
 		this.plugin = plugin; 
-/*
-		HashMap<String, Integer> tierValues = new HashMap<String, Integer>();
-		tierValues.put("Grass", grassValue);
-		tierValues.put("Log", logValue);
-		tierValues.put("Stone", stoneValue);
-		tierValues.put("Coal", coalValue);
-		tierValues.put("Iron", ironValue);
-		tierValues.put("Redstone", redstoneValue);
-		tierValues.put("Lapis", lapisValue);
-		tierValues.put("Gold", goldValue);
-		tierValues.put("Obsidian", obsidianValue);
-		tierValues.put("Diamond", diamondValue);
-		tierValues.put("Emerald", emeraldValue);
-		
-		HashMap<String, Integer> multValues = new HashMap<String, Integer>();
-		multValues.put("Grass", grassMult);
-		multValues.put("Log", logMult);
-		multValues.put("Stone", stoneMult);
-		multValues.put("Coal", coalMult);
-		multValues.put("Iron", ironMult);
-		multValues.put("Redstone", redstoneMult);
-		multValues.put("Lapis", lapisMult);
-		multValues.put("Gold", goldMult);
-		multValues.put("Obsidian", obsidianMult);
-		multValues.put("Diamond", diamondMult);
-		multValues.put("Emerald", emeraldMult);
-		*/
+
 	}
 	
 	public static void insertPlayer(Player p, Block b) {
@@ -133,18 +91,17 @@ public class BlockBR {
 		
 	}
 	public static void ifNatural(boolean natural){
+		
 		if(natural == true) {
 			findLevelandTier();
 			
 		}else {
 			return;
 		}
+		
 	}
 	
 	public static void increaseAmount(String tier) {
-		
-		// Amount mined at your current tier
-		int amount;
 		
 		//Finds the amount of the current tier they're on
 		try {
@@ -222,6 +179,7 @@ public class BlockBR {
 			
 			int results = stmt.executeUpdate();
 			
+			setVars();
 			checkThreshold(amount);
 			
 		} catch (SQLException e) {
@@ -229,10 +187,208 @@ public class BlockBR {
 			e.printStackTrace();
 		}
 		
+		player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(Chat.chat("&b&lLevel: &l" + level + " &r&l| &r&l[" + "&d&l" + tier.toUpperCase() + "&r&l] " + "&6&l" + amount + "&b&l/&6&l" + (int) threshold)));
+		
+	}
+	
+	public static void setVars() {
+		
+		 grassValue = plugin.getConfig().getInt("GrassValue");
+		 logValue = plugin.getConfig().getInt("LogValue");
+		 stoneValue = plugin.getConfig().getInt("StoneValue");
+		 coalValue = plugin.getConfig().getInt("CoalValue");
+		 ironValue = plugin.getConfig().getInt("IronValue");
+		 redstoneValue = plugin.getConfig().getInt("RedstoneValue");
+		 lapisValue = plugin.getConfig().getInt("LapisValue");
+		 goldValue = plugin.getConfig().getInt("GoldValue");
+		 obsidianValue = plugin.getConfig().getInt("ObsidianValue");
+		 diamondValue = plugin.getConfig().getInt("DiamondValue");
+		 emeraldValue = plugin.getConfig().getInt("EmeraldValue");
+		
+		 grassMult = plugin.getConfig().getDouble("GrassMult");
+		 logMult = plugin.getConfig().getDouble("LogMult");
+		 stoneMult = plugin.getConfig().getDouble("StoneMult");
+		 coalMult = plugin.getConfig().getDouble("CoalMult");
+		 ironMult = plugin.getConfig().getDouble("IronMult");
+		 redstoneMult = plugin.getConfig().getDouble("RedstoneMult");
+		 lapisMult = plugin.getConfig().getDouble("LapisMult");
+		 goldMult = plugin.getConfig().getDouble("GoldMult");
+		 obsidianMult = plugin.getConfig().getDouble("ObsidianMult");
+		 diamondMult = plugin.getConfig().getDouble("DiamondMult");
+		 emeraldMult = plugin.getConfig().getDouble("EmeraldMult");
+		
+		//Puts the variables into the tierValues HashMap
+		tierValues.put("grass", grassValue);
+		tierValues.put("log", logValue);
+		tierValues.put("stone", stoneValue);
+		tierValues.put("coal", coalValue);
+		tierValues.put("iron", ironValue);
+		tierValues.put("redstone", redstoneValue);
+		tierValues.put("lapis", lapisValue);
+		tierValues.put("gold", goldValue);
+		tierValues.put("obsidian", obsidianValue);
+		tierValues.put("diamond", diamondValue);
+		tierValues.put("emerald", emeraldValue);
+		
+		//Puts the variables into the multValues HashMap
+		multValues.put("grass", grassMult);
+		multValues.put("log", logMult);
+		multValues.put("stone", stoneMult);
+		multValues.put("coal", coalMult);
+		multValues.put("iron", ironMult);
+		multValues.put("redstone", redstoneMult);
+		multValues.put("lapis", lapisMult);
+		multValues.put("gold", goldMult);
+		multValues.put("obsidian", obsidianMult);
+		multValues.put("diamond", diamondMult);
+		multValues.put("emerald", emeraldMult);
+		
 	}
 	
 	public static void checkThreshold(int amount) {
+		   
+		if(level == 1) {
+			threshold = tierValues.get(tier);
+		}else {
+			//Takes the initial value and multiplies it by the multiplier times the level-1
+			threshold = tierValues.get(tier) * (multValues.get(tier)*(level-1));
+		}
 		
+		if(threshold == amount)
+			levelUpLevelAndTier();
+		else
+			return;
+		
+	}
+	
+	public static void levelUpLevelAndTier() {
+		
+		int index;
+		
+		// Takes you to the next tier
+		for(int x = 0;x < tierList.length;x++) {
+			//If this is the last tier
+			if(tier.equalsIgnoreCase(tierList[tierList.length-1])) {
+				String lastTier = tier;
+				level++;
+				tier = "grass";
+				player.sendMessage(Chat.blockBrChat("Congratulations! You have leveled up to level " + tier));
+				spawnFireWorks();
+				upgradeData(lastTier);
+				return;
+			}else {
+				//Increment the tier
+				if(tierList[x].equalsIgnoreCase(tier)) {	
+					String lastTier = tier;
+					tier = tierList[x+1];
+					player.sendMessage(Chat.blockBrChat("Congratulations! You have gone up a tier. You are now on tier &l&6" + tier));
+					spawnFireWorks();
+					upgradeData(lastTier);
+					return;
+				}	
+			}
+		}
+	}
+	
+	public static void upgradeData(String lastTier) {
+		
+		try {
+			
+			//Updates the level
+			PreparedStatement stmt = plugin.getConnection().prepareStatement("UPDATE `blockbr` SET level=? WHERE playerName=?");
+			stmt.setString(1, String.valueOf(level));
+			stmt.setString(2, player.getName());
+			stmt.executeUpdate();
+			
+			//Makes the count to 0
+				if(lastTier.equalsIgnoreCase("grass")) {
+					
+					stmt = plugin.getConnection().prepareStatement("UPDATE `blockbr` SET grass=? WHERE playerName=?");
+					
+				}else if(lastTier.contentEquals("log")){
+					
+					stmt = plugin.getConnection().prepareStatement("UPDATE `blockbr` SET log=? WHERE playerName=?");
+					
+				}else if(lastTier.equalsIgnoreCase("stone")) {
+					
+					stmt = plugin.getConnection().prepareStatement("UPDATE `blockbr` SET stone=? WHERE playerName=?");
+					
+				}else if(lastTier.equalsIgnoreCase("coal")) {
+					
+					stmt = plugin.getConnection().prepareStatement("UPDATE `blockbr` SET coal=? WHERE playerName=?");
+					
+				}else if(lastTier.equalsIgnoreCase("redstone")) {
+					
+					stmt = plugin.getConnection().prepareStatement("UPDATE `blockbr` SET redstone=? WHERE playerName=?");
+					
+				}else if(lastTier.equalsIgnoreCase("lapis")) {
+					
+					stmt = plugin.getConnection().prepareStatement("UPDATE `blockbr` SET lapis=? WHERE playerName=?");
+					
+				}else if(lastTier.equalsIgnoreCase("iron")) {
+					
+					stmt = plugin.getConnection().prepareStatement("UPDATE `blockbr` SET iron=? WHERE playerName=?");
+					
+				}else if(lastTier.equalsIgnoreCase("gold")) {
+					
+					stmt = plugin.getConnection().prepareStatement("UPDATE `blockbr` SET gold=? WHERE playerName=?");
+					
+				}else if(lastTier.equalsIgnoreCase("obsidian")) {
+					
+					stmt = plugin.getConnection().prepareStatement("UPDATE `blockbr` SET obsidian=? WHERE playerName=?");
+					
+				}else if(lastTier.equalsIgnoreCase("diamond")) {
+					
+					stmt = plugin.getConnection().prepareStatement("UPDATE `blockbr` SET diamond=? WHERE playerName=?");
+					
+				}else if(lastTier.equalsIgnoreCase("emerald")) {
+
+					stmt = plugin.getConnection().prepareStatement("UPDATE `blockbr` SET emerald=? WHERE playerName=?");
+					
+				}else {
+					player.sendMessage(Chat.blockBrChat("An error has ocurred..."));
+				}		
+				
+				stmt.setString(1, "0");
+				stmt.setString(2, player.getName());
+				stmt.executeUpdate();
+				
+				//Sets the tier
+				stmt = plugin.getConnection().prepareStatement("UPDATE `blockbr` SET tier=? WHERE playerName=?");
+				stmt.setString(1, tier);
+				stmt.setString(2, player.getName());
+				stmt.executeUpdate();
+					
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public static void spawnFireWorks() {
+		
+		Location playerLoc = player.getLocation();
+		Firework fw = (Firework) playerLoc.getWorld().spawnEntity(playerLoc, EntityType.FIREWORK);
+		
+		FireworkMeta fwm = fw.getFireworkMeta();
+		FireworkEffect effect = FireworkEffect.builder().flicker(true).withColor(Color.AQUA).build();
+		fwm.addEffect(effect);
+		
+		fw.setFireworkMeta(fwm);
+		
+		detonate(fw);
+	}
+	
+	public static void detonate(final Firework fw) {
+		//Waits 1 tick and then it detonates
+		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+            public void run() {
+                try{
+                    fw.detonate();
+                }catch(Exception e){}
+            }
+        }, (3));
 	}
 	
 	// Finds the tier and the level
@@ -356,5 +512,6 @@ public class BlockBR {
 		}
 		
 	}
+
 	
 }
