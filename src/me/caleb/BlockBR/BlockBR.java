@@ -16,6 +16,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.FireworkMeta;
 
 import me.caleb.BlockBR.utils.Chat;
+import me.caleb.BlockBR.utils.Gui;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 
@@ -187,6 +188,9 @@ public class BlockBR{
 			e.printStackTrace();
 		}
 		
+		Gui g = new Gui();
+		g.initializeItems(tier, amount, level, threshold);
+		g.openInventory(player);
 		player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(Chat.chat("&b&lLevel: &l" + level + " &r&l| &r&l[" + "&d&l" + tier.toUpperCase() + "&r&l] " + "&6&l" + amount + "&b&l/&6&l" + (int) threshold)));
 		
 	}

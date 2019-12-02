@@ -9,6 +9,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import me.caleb.BlockBR.listener.BlockMeta;
 import me.caleb.BlockBR.utils.Chat;
+import me.caleb.BlockBR.utils.Gui;
 
 
 public class Main extends JavaPlugin{
@@ -23,6 +24,7 @@ public class Main extends JavaPlugin{
 		loadConfig();
 		new BlockMeta(this);
 		new BlockBR(this);
+		new Gui();
 	}
 	
 	public void loadConfig() {

@@ -7,6 +7,6 @@ public class Chat {
 		return ChatColor.translateAlternateColorCodes('&', s);
 	}
 	public static String blockBrChat(String s) {
-		return chat("&l[&6BlockBR&r&l]&r " + s);
+		return chat("&l[&6&lBlockBR&r&l]&r " + s);
 	}
 }
