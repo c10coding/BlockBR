@@ -41,6 +41,28 @@ GoldMult: 1.15
 ObsidianMult: 1.1
 DiamondMult: 1.05
 EmeraldMult: 1.01
+#
+# Multiplier for the money
+#
+MoneyMult: 2.0
+
+
+#Money
+#
+# How much money a player gets per tier
+#
+
+GrassMoney: 250
+LogMoney: 500
+StoneMoney: 250
+CoalMoney: 500
+IronMoney: 750
+RedstoneMoney: 800
+LapisMoney: 800
+GoldMoney: 850
+ObsidianMoney: 900
+DiamondMoney: 1000
+EmeraldMoney: 1500
 
 #Help
 

@@ -5,12 +5,14 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import me.caleb.BlockBR.command.PlayerCommands;
 import me.caleb.BlockBR.listener.BlockMeta;
 import me.caleb.BlockBR.utils.Chat;
-import me.caleb.BlockBR.utils.Gui;
+import me.caleb.BlockBR.utils.Rewards;
+import net.milkbowl.vault.economy.Economy;
 
 
 public class Main extends JavaPlugin{
@@ -18,15 +20,38 @@ public class Main extends JavaPlugin{
 	private int port;
 	public Connection connection;
 	private String host, database, username, password;
+	public static Economy economy = null;
 	
 	@Override
 	public void onEnable() {
+		
+		if (!setupEconomy()) {
+            this.getLogger().severe("Disabled due to no Vault dependency found!");
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        }
+		
 		mysqlSetup();
 		loadConfig();
+		
 		new BlockMeta(this);
 		new BlockBR(this);
 		new PlayerCommands(this);
 	}
+	
+	private boolean setupEconomy()
+    {
+        RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
+        if (economyProvider != null) {
+            economy = economyProvider.getProvider();
+        }
+
+        return (economy != null);
+    }
+	
+    public static Economy getEconomy() {
+        return economy;
+    }
 	
 	public void loadConfig() {
 		getConfig().options().copyDefaults(true);

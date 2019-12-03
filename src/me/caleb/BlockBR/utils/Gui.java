@@ -16,15 +16,14 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import me.caleb.BlockBR.Main;
 
-public class Gui implements Listener, InventoryHolder{
+public class Gui extends AbstractGui implements Listener, InventoryHolder{
 	
-	private final Inventory inv;
 	Material materialList[] = {Material.GRASS_BLOCK,Material.OAK_LOG,Material.STONE,Material.COAL_ORE,Material.REDSTONE_ORE,Material.LAPIS_ORE,Material.IRON_ORE,Material.GOLD_ORE,Material.OBSIDIAN,Material.DIAMOND_ORE,Material.EMERALD_ORE};
 	Material matTier;
-	private Main plugin;
+	public Main plugin;
 	
-	public Gui(Main plugin) {
-		inv = Bukkit.createInventory(this, 9, Chat.blockBrChat("Info"));
+	public Gui(Main plugin, String title, int numSlots) {
+		super(plugin,title,numSlots);
 		Bukkit.getPluginManager().registerEvents(this,plugin);
 	}
 	
@@ -117,7 +116,11 @@ public class Gui implements Listener, InventoryHolder{
         if (clickedItem == null || clickedItem.getType() == Material.AIR) return;
 
         // Using slots click is a best option for your inventory click's
-        if (e.getRawSlot() == 2) p.sendMessage("You clicked at slot " + 10);
+        if (e.getRawSlot() == 3) {
+        	p.closeInventory();
+        	RewardsGui g = new RewardsGui(plugin, "Rewards",9);
+        	g.openInventory(p);
+        }
     }
 
 }

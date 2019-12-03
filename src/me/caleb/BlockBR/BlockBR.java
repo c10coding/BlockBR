@@ -16,6 +16,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.FireworkMeta;
 
 import me.caleb.BlockBR.utils.Chat;
+import me.caleb.BlockBR.utils.Rewards;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 
@@ -39,6 +40,7 @@ public class BlockBR{
 	public BlockBR(Main plugin) {
 		
 		this.plugin = plugin; 
+		
 		setVars();
 		
 	}
@@ -270,23 +272,33 @@ public class BlockBR{
 		for(int x = 0;x < tierList.length;x++) {
 			//If this is the last tier
 			if(tier.equalsIgnoreCase(tierList[tierList.length-1])) {
+				//New Level
 				String lastTier = tier;
 				level++;
 				tier = "grass";
+				Bukkit.broadcastMessage(Chat.blockBrChat("&l" + player.getName() + " &5has reached level &6") + String.valueOf(level));
 				player.sendMessage(Chat.blockBrChat("Congratulations! You have leveled up to level " + tier));
 				
+				Rewards.giveKey(player,lastTier,level);
+				Rewards.giveMoney(player, lastTier, level);
 				spawnFireWorks();
 				upgradeData(lastTier);
+				
 				return;
 			}else {
-				//Increment the tier
+				//New Tier
 				if(tierList[x].equalsIgnoreCase(tier)) {	
+					
 					String lastTier = tier;
 					tier = tierList[x+1];
 					player.sendMessage(Chat.blockBrChat("Congratulations! You have gone up a tier. You are now on tier &l&6" + tier));
-					Bukkit.broadcastMessage(Chat.blockBrChat("&l" + player.getName() + " &5has reached level &6") + String.valueOf(level));
+					
+					Rewards.giveKey(player,lastTier,level);
+					Rewards.giveMoney(player, lastTier, level);
+					
 					spawnFireWorks();
 					upgradeData(lastTier);
+					
 					return;
 				}	
 			}
