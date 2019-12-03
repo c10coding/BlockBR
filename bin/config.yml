@@ -5,7 +5,8 @@ Database: "serverpro_db"
 Username: "root"
 Password: "Krni7YlzOK843lx"
 
-
+#Broadcasting of messages
+Broadcast: true
 
 #Initial Values
 #
@@ -40,3 +41,8 @@ GoldMult: 1.15
 ObsidianMult: 1.1
 DiamondMult: 1.05
 EmeraldMult: 1.01
+
+#Help
+
+Help:
+- Do &6&l/bbr menu &5to bring up the menu

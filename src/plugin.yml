@@ -3,3 +3,8 @@ version: 1.0
 main: me.caleb.BlockBR.Main
 author: Caleb Owens
 api-version: 1.13
+commands:
+  blockbr:
+    description: Allows you to use blockbr commands
+    permission: blockbr.use
+    aliases: [bbr]

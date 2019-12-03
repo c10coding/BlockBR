@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import me.caleb.BlockBR.command.PlayerCommands;
 import me.caleb.BlockBR.listener.BlockMeta;
 import me.caleb.BlockBR.utils.Chat;
 import me.caleb.BlockBR.utils.Gui;
@@ -24,7 +25,7 @@ public class Main extends JavaPlugin{
 		loadConfig();
 		new BlockMeta(this);
 		new BlockBR(this);
-		new Gui();
+		new PlayerCommands(this);
 	}
 	
 	public void loadConfig() {
@@ -79,7 +80,7 @@ public class Main extends JavaPlugin{
 	        } 
 	        Class.forName("com.mysql.jdbc.Driver");
 	        connection = DriverManager.getConnection("jdbc:mysql://" + this.host+ ":" + this.port + "/" + this.database, this.username, this.password);
-	        Bukkit.getConsoleSender().sendMessage(Chat.chat("MYSQL CONNECTED!"));
+	        Bukkit.getConsoleSender().sendMessage(Chat.blockBrChat(("MYSQL CONNECTED!")));
 	    }
 	    
 	}

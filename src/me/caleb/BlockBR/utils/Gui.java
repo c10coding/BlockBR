@@ -14,14 +14,18 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import me.caleb.BlockBR.Main;
+
 public class Gui implements Listener, InventoryHolder{
 	
 	private final Inventory inv;
 	Material materialList[] = {Material.GRASS_BLOCK,Material.OAK_LOG,Material.STONE,Material.COAL_ORE,Material.REDSTONE_ORE,Material.LAPIS_ORE,Material.IRON_ORE,Material.GOLD_ORE,Material.OBSIDIAN,Material.DIAMOND_ORE,Material.EMERALD_ORE};
 	Material matTier;
+	private Main plugin;
 	
-	public Gui() {
+	public Gui(Main plugin) {
 		inv = Bukkit.createInventory(this, 9, Chat.blockBrChat("Info"));
+		Bukkit.getPluginManager().registerEvents(this,plugin);
 	}
 	
 	@Override
@@ -82,7 +86,11 @@ public class Gui implements Listener, InventoryHolder{
 		setMatTier(tier);
 		
         inv.addItem(createGuiItem(matTier, Chat.chat("&lCurrent Tier"), "Your current tier is " + Chat.chat("&6" + tier.toUpperCase()), "The amount you must reach to get to the next tier is " + (int) threshold));
-        inv.addItem(createGuiItem(Material.IRON_PICKAXE, "Amount mined on current tier", Chat.chat("&lAmount: " + amount)));
+        inv.addItem(createGuiItem(Material.EXPERIENCE_BOTTLE, Chat.chat("&lLevel:" + "&6 " + level)));
+        inv.addItem(createGuiItem(Material.WOODEN_PICKAXE, Chat.chat("&lAmount mined on current tier"), Chat.chat("&lAmount: " + amount)));
+        inv.addItem(createGuiItem(Material.CHEST, Chat.chat("&lPotential Rewards"), Chat.chat("&6These are rewards that your tier provides you")));
+        inv.addItem(createGuiItem(Material.BEACON, Chat.chat("&r&lTier list"), Chat.chat("&6Grass, Log, Stone, Coal, Redstone, Lapis, Iron, Gold, Obsidian, Diamond, Emerald")));
+        
     }
 	
 	public void openInventory(Player p) {
@@ -91,12 +99,15 @@ public class Gui implements Listener, InventoryHolder{
 	
 	@EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
+		
         if (e.getInventory().getHolder() != this) {
             return;
         }
+        
         if (e.getClick().equals(ClickType.NUMBER_KEY)){
             e.setCancelled(true);
         }
+        
         e.setCancelled(true);
 
         Player p = (Player) e.getWhoClicked();
@@ -106,7 +117,7 @@ public class Gui implements Listener, InventoryHolder{
         if (clickedItem == null || clickedItem.getType() == Material.AIR) return;
 
         // Using slots click is a best option for your inventory click's
-        if (e.getRawSlot() == 10) p.sendMessage("You clicked at slot " + 10);
+        if (e.getRawSlot() == 2) p.sendMessage("You clicked at slot " + 10);
     }
 
 }

@@ -45,6 +45,7 @@ public class BlockMeta implements Listener{
 		
 		if(block.hasMetadata("PLACED") || block.hasMetadata("FORMED")) {
 			//If it's not natural
+			BlockBR.insertPlayer(player,block);
 			BlockBR.ifNatural(false);
 		}else {
 			//If it is natural

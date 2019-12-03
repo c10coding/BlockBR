@@ -16,7 +16,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.FireworkMeta;
 
 import me.caleb.BlockBR.utils.Chat;
-import me.caleb.BlockBR.utils.Gui;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 
@@ -28,19 +27,20 @@ public class BlockBR{
 	public static double threshold;
 	public static int amount;
 	
-	private static int level;
-	private static String tier;
-	private static String logList[] = {"Log_1","Log_2","Log_3","Log_4","Log_5","Log_6"};
+	public static int level;
+	public static String tier;
+	private static String logList[] = {"Oak_log","Birch_log","Acacia_Log","Jungle_log","Dark_Oak_Log","Spruce_Log"};
 	private static String tierList[] = {"grass","log","stone","coal","redstone","lapis","iron","gold","obsidian","diamond","emerald"};
  	private static int grassValue, logValue, stoneValue, coalValue, redstoneValue, lapisValue, ironValue, goldValue, obsidianValue, diamondValue, emeraldValue;
 	private static double grassMult, logMult, stoneMult, coalMult, redstoneMult, lapisMult, ironMult, goldMult, obsidianMult, diamondMult, emeraldMult;
-	private static HashMap<String, Integer> tierValues = new HashMap<String, Integer>();
-	private static HashMap<String, Double> multValues = new HashMap<String, Double>();
+	public static HashMap<String, Integer> tierValues = new HashMap<String, Integer>();
+	public static HashMap<String, Double> multValues = new HashMap<String, Double>();
 	
 	public BlockBR(Main plugin) {
 		
 		this.plugin = plugin; 
-
+		setVars();
+		
 	}
 	
 	public static void insertPlayer(Player p, Block b) {
@@ -116,7 +116,6 @@ public class BlockBR{
 			//Increments the amount mined
 			amount++;
 			
-			
 			// Updates the amount mined in the database
 			if(tier.equalsIgnoreCase("grass")) {
 				stmt = plugin.getConnection().prepareStatement("UPDATE `blockbr` SET grass=? WHERE playerName=?");
@@ -180,7 +179,7 @@ public class BlockBR{
 			
 			int results = stmt.executeUpdate();
 			
-			setVars();
+			
 			checkThreshold(amount);
 			
 		} catch (SQLException e) {
@@ -188,9 +187,7 @@ public class BlockBR{
 			e.printStackTrace();
 		}
 		
-		Gui g = new Gui();
-		g.initializeItems(tier, amount, level, threshold);
-		g.openInventory(player);
+		//Action bar message
 		player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(Chat.chat("&b&lLevel: &l" + level + " &r&l| &r&l[" + "&d&l" + tier.toUpperCase() + "&r&l] " + "&6&l" + amount + "&b&l/&6&l" + (int) threshold)));
 		
 	}
@@ -277,6 +274,7 @@ public class BlockBR{
 				level++;
 				tier = "grass";
 				player.sendMessage(Chat.blockBrChat("Congratulations! You have leveled up to level " + tier));
+				
 				spawnFireWorks();
 				upgradeData(lastTier);
 				return;
@@ -286,6 +284,7 @@ public class BlockBR{
 					String lastTier = tier;
 					tier = tierList[x+1];
 					player.sendMessage(Chat.blockBrChat("Congratulations! You have gone up a tier. You are now on tier &l&6" + tier));
+					Bukkit.broadcastMessage(Chat.blockBrChat("&l" + player.getName() + " &5has reached level &6") + String.valueOf(level));
 					spawnFireWorks();
 					upgradeData(lastTier);
 					return;
@@ -397,7 +396,6 @@ public class BlockBR{
 	
 	// Finds the tier and the level
 	public static void findLevelandTier() {
-		
 		try {
 			
 			PreparedStatement stmt = plugin.getConnection().prepareStatement("SELECT * FROM `blockbr` WHERE playerName=?");
@@ -417,15 +415,13 @@ public class BlockBR{
 			//If the tier is anything else, just check accordingly
 			if(tier.equalsIgnoreCase("grass")) {
 				
-				if(blockName.equalsIgnoreCase(tier) || blockName.equalsIgnoreCase("dirt")) {
+				if(blockName.equalsIgnoreCase("grass_block") || blockName.equalsIgnoreCase("dirt")) {
 					increaseAmount(tier);
 				}else {
 					return;
 				}
 				
 			}else if(tier.contentEquals("log")){
-				
-				player.sendMessage(blockName);
 				
 				for(int x = 0;x < logList.length; x++) {
 					if(blockName.equalsIgnoreCase(logList[x])) {
