@@ -41,15 +41,16 @@ public class GetInfo {
 			setLevel(Integer.parseInt(rs.getString("level")));
 			setAmount(Integer.parseInt(rs.getString(tier)));
 			
-			Rewards r = new Rewards(plugin, p, tier, level);
+			Rewards r = new Rewards(plugin);
 			
-			rewardNames = r.getAllRewardsNames(p, tier, level);
-			rewardMats = r.getAllRewardsMaterials(p, tier, level);
-			rewardAmounts = r.getAllRewardsAmounts(p, tier, level);
+			/*
+			rewardNames = r.getAllRewardsNames(tier, level);
+			rewardMats = r.getAllRewardsMaterials(tier, level);
+			rewardAmounts = r.getAllRewardsAmounts(tier, level);
+			*/
 			
 			if(Integer.parseInt(rs.getString("level")) == 1) {
 				setThreshold(BlockBR.tierValues.get(rs.getString("tier")));
-				p.sendMessage(String.valueOf(threshold));
 			}else {
 				setThreshold(BlockBR.tierValues.get(rs.getString("tier")) * (BlockBR.multValues.get(rs.getString("tier"))*(Integer.parseInt(rs.getString("level"))-1)));
 			}

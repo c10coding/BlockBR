@@ -16,7 +16,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import me.caleb.BlockBR.Main;
 
-public class Menu extends AbstractGui implements Listener, InventoryHolder{
+public class Menu extends AbstractMenu implements Listener, InventoryHolder{
 	
 	Material materialList[] = {Material.GRASS_BLOCK,Material.OAK_LOG,Material.STONE,Material.COAL_ORE,Material.REDSTONE_ORE,Material.LAPIS_ORE,Material.IRON_ORE,Material.GOLD_ORE,Material.OBSIDIAN,Material.DIAMOND_ORE,Material.EMERALD_ORE};
 	Material matTier;

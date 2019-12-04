@@ -7,15 +7,14 @@ import org.bukkit.inventory.InventoryHolder;
 import me.caleb.BlockBR.Main;
 import me.caleb.BlockBR.utils.TierMenu;
 
-public class Grass extends TierMenu implements Listener, InventoryHolder{
+public class Gold extends TierMenu implements Listener, InventoryHolder{
 	
-	public Grass(Main plugin, String guiTitle) {
+	public Gold(Main plugin, String guiTitle) {
 		super(plugin, guiTitle);
 		Bukkit.getPluginManager().registerEvents(this,plugin);
 	}
 
 	@Override
 	public void initializeItems(String tier, int amount, int level, double threshold) {};
-
 
 }

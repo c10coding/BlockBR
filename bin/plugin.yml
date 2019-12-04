@@ -9,5 +9,8 @@ commands:
     description: Allows you to use blockbr commands
     permission: blockbr.use
     aliases: [bbr]
-
-    
+    default: true
+  blockbra:
+    description: Admin commands
+    permission: blockbr.admin
+    aliases: [bbra]

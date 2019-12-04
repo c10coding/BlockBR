@@ -15,7 +15,6 @@ import me.caleb.BlockBR.utils.GetInfo;
 import me.caleb.BlockBR.utils.Rewards;
 import net.milkbowl.vault.economy.Economy;
 
-
 public class Main extends JavaPlugin{
 	
 	private int port;

@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -14,6 +15,8 @@ import me.caleb.BlockBR.BlockBR;
 import me.caleb.BlockBR.Main;
 import me.caleb.BlockBR.utils.Chat;
 import me.caleb.BlockBR.utils.Menu;
+import me.caleb.BlockBR.utils.Rewards;
+import me.caleb.BlockBR.utils.crate.CrateDealer;
 
 public class PlayerCommands implements CommandExecutor{
 
@@ -24,6 +27,7 @@ public class PlayerCommands implements CommandExecutor{
 	public PlayerCommands(Main plugin) {
 		this.plugin = plugin;
 		plugin.getCommand("blockbr").setExecutor(this);
+		plugin.getCommand("blockbra").setExecutor(this);
 	}
 	
 	@Override
@@ -35,7 +39,7 @@ public class PlayerCommands implements CommandExecutor{
 			sender.sendMessage("You must be a player to use these commands!");
 		}else {
 			
-			if(player.hasPermission("blockbr.use")) {		
+			if(player.hasPermission("blockbr.use")) {
 				if(args[0].equalsIgnoreCase("menu")) {
 					Menu g = new Menu(plugin, "Info",9,true);
 					g.initializeItems(getTier(),getAmount(), getLevel(), getThreshold());
@@ -46,6 +50,48 @@ public class PlayerCommands implements CommandExecutor{
 					for(String e : list) {
 						sender.sendMessage(Chat.chat("&5" + e));
 					}
+					/*
+				}else if(args[0].equalsIgnoreCase("makeCrate")) {
+					
+					if(player.hasPermission("blockbr.admin")) {
+						
+						//player.sendMessage("You have the admin command");
+						
+						if(args[1].isEmpty()) {
+							
+							player.sendMessage(Chat.blockBrChat("You forgot the name of the crate! &6/bbra makeCrate [Crate Name]"));
+							
+						}else {
+							CrateDealer c = new CrateDealer(plugin);
+							c.makeCrate(args[1], player);
+						}
+						
+					}else {
+						player.sendMessage(Chat.blockBrChat("You do not have access to this command!"));
+					}*/
+					/*
+				}else if(args[0].equalsIgnoreCase("addItem")) {
+					if(player.hasPermission("blockbr.admin")) {
+						
+						String crateName = args[0];
+						org.bukkit.Material material = org.bukkit.Material.matchMaterial(args[2]);
+						
+						CrateDealer c = new CrateDealer(plugin);
+						
+						try {
+							c.addItems(args[1],material, Integer.parseInt(args[3]), player);
+						}catch(IllegalArgumentException e) {
+							player.sendMessage(Chat.blockBrChat("Something went wrong. Make sure that the command looks like this: &6&l/bbr addItem [Crate Name] [Item] [Amount]"));
+						}catch(ArrayIndexOutOfBoundsException e){
+							player.sendMessage(Chat.blockBrChat("Something went wrong. Make sure that the command looks like this: &6&l/bbr addItem [Crate Name] [Item] [Amount]"));
+						}
+						
+					}else {
+						player.sendMessage(Chat.blockBrChat("You do not have access to this command!"));
+					}*/	
+					
+				}else {
+					player.sendMessage(Chat.blockBrChat("You do not have that permissions!"));
 				}
 			}
 		}

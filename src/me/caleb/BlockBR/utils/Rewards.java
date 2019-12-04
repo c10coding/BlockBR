@@ -2,11 +2,17 @@ package me.caleb.BlockBR.utils;
 
 import java.util.ArrayList;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import com.hazebyte.crate.api.CrateAPI;
 import com.hazebyte.crate.api.CratePlugin;
+import com.hazebyte.crate.api.crate.Crate;
+import com.hazebyte.crate.api.crate.CrateType;
+import com.hazebyte.crate.api.crate.reward.Reward;
+import com.hazebyte.crate.api.crate.reward.RewardLine;
 
 import me.caleb.BlockBR.Main;
 
@@ -15,7 +21,7 @@ public class Rewards {
 	private Main plugin;
 	private static CratePlugin api = CrateAPI.getInstance();
 	
-	public Rewards (Main plugin, Player p, String tier, int level) {
+	public Rewards (Main plugin) {
 		this.plugin = plugin;
 	}
 	
@@ -25,7 +31,7 @@ public class Rewards {
 	}
 	
 	//Gets all the rewards for this tier
-	public ArrayList<String> getAllRewardsNames(Player p, String tier, int level) {
+	public ArrayList<String> getAllRewardsNames(String tier, int level) {
 		
 		int size = api.getCrateRegistrar().getCrate(tier+level+"Chest").getRewardSize();
 		ArrayList<String> rewardNames = new ArrayList<String>();
@@ -40,7 +46,7 @@ public class Rewards {
 		
 	}
 	
-	public ArrayList<Material> getAllRewardsMaterials(Player p, String tier, int level) {
+	public ArrayList<Material> getAllRewardsMaterials(String tier, int level) {
 		
 		int size = api.getCrateRegistrar().getCrate(tier+level+"Chest").getRewardSize();
 		ArrayList<Material> rewardMaterials = new ArrayList<Material>();
@@ -55,7 +61,7 @@ public class Rewards {
 		
 	}
 	
-	public ArrayList<Integer> getAllRewardsAmounts(Player p, String tier, int level){
+	public ArrayList<Integer> getAllRewardsAmounts(String tier, int level){
 		
 		int size = api.getCrateRegistrar().getCrate(tier+level+"Chest").getRewardSize();
 		ArrayList<Integer> rewardsAmounts = new ArrayList<Integer>();	
@@ -64,7 +70,6 @@ public class Rewards {
 			int amount = api.getCrateRegistrar().getCrate(tier+level+"Chest").getRewards().get(x).getDisplayItem().getAmount();
 			rewardsAmounts.add(amount);
 		}
-		
 		return rewardsAmounts;
 		
 		
@@ -88,5 +93,6 @@ public class Rewards {
 		Main.getEconomy().depositPlayer(p,tierMoney);
 		
 	}
+	
 	
 }

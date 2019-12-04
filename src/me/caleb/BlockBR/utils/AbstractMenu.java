@@ -17,7 +17,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import me.caleb.BlockBR.BlockBR;
 import me.caleb.BlockBR.Main;
 
-public abstract class AbstractGui implements Listener, InventoryHolder{
+public abstract class AbstractMenu implements Listener, InventoryHolder{
 	
 	public final Inventory inv;
 	Material materialList[] = {Material.GRASS_BLOCK,Material.OAK_LOG,Material.STONE,Material.COAL_ORE,Material.REDSTONE_ORE,Material.LAPIS_ORE,Material.IRON_ORE,Material.GOLD_ORE,Material.OBSIDIAN,Material.DIAMOND_ORE,Material.EMERALD_ORE};
@@ -25,7 +25,7 @@ public abstract class AbstractGui implements Listener, InventoryHolder{
 	//Initialized so that every gui that extends this can access the gi variables
 	public GetInfo gi;
 	
-	public AbstractGui(Main plugin, String guiTitle, int numSlots, boolean blockbrchat) {
+	public AbstractMenu(Main plugin, String guiTitle, int numSlots, boolean blockbrchat) {
 		
 		if(blockbrchat == true) {
 			inv = Bukkit.createInventory(this, numSlots, Chat.blockBrChat(guiTitle));
@@ -94,9 +94,12 @@ public abstract class AbstractGui implements Listener, InventoryHolder{
 	
 	public abstract void initializeItems(String tier, int amount, int level, double threshold);
 	
-	public abstract void openInventory(Player p);
+	public void openInventory(Player p) {
+		p.openInventory(inv);
+	}
 	
 	@EventHandler
     public abstract void onInventoryClick(InventoryClickEvent e);
+
 
 }

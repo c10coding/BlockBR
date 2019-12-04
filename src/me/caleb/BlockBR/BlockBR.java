@@ -267,7 +267,7 @@ public class BlockBR{
 	public static void levelUpLevelAndTier() {
 		
 		int index;
-		Rewards r = new Rewards(plugin,player,tier,level);
+		Rewards r = new Rewards(plugin);
 		
 		// Takes you to the next tier
 		for(int x = 0;x < tierList.length;x++) {
@@ -279,8 +279,6 @@ public class BlockBR{
 				tier = "grass";
 				Bukkit.broadcastMessage(Chat.blockBrChat("&l" + player.getName() + " &5has reached level &6") + String.valueOf(level));
 				player.sendMessage(Chat.blockBrChat("Congratulations! You have leveled up to level " + tier));
-				
-				
 				
 				r.giveKey(player,lastTier,level);
 				r.giveMoney(player, lastTier, level);

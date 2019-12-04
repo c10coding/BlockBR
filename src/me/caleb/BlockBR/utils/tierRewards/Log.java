@@ -7,9 +7,9 @@ import org.bukkit.inventory.InventoryHolder;
 import me.caleb.BlockBR.Main;
 import me.caleb.BlockBR.utils.TierMenu;
 
-public class Grass extends TierMenu implements Listener, InventoryHolder{
+public class Log extends TierMenu implements Listener, InventoryHolder{
 	
-	public Grass(Main plugin, String guiTitle) {
+	public Log(Main plugin, String guiTitle) {
 		super(plugin, guiTitle);
 		Bukkit.getPluginManager().registerEvents(this,plugin);
 	}
