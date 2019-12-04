@@ -11,6 +11,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import me.caleb.BlockBR.command.PlayerCommands;
 import me.caleb.BlockBR.listener.BlockMeta;
 import me.caleb.BlockBR.utils.Chat;
+import me.caleb.BlockBR.utils.GetInfo;
 import me.caleb.BlockBR.utils.Rewards;
 import net.milkbowl.vault.economy.Economy;
 
@@ -37,6 +38,7 @@ public class Main extends JavaPlugin{
 		new BlockMeta(this);
 		new BlockBR(this);
 		new PlayerCommands(this);
+		new GetInfo(this);
 	}
 	
 	private boolean setupEconomy()

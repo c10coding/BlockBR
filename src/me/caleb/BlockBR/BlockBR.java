@@ -31,7 +31,7 @@ public class BlockBR{
 	public static int level;
 	public static String tier;
 	private static String logList[] = {"Oak_log","Birch_log","Acacia_Log","Jungle_log","Dark_Oak_Log","Spruce_Log"};
-	private static String tierList[] = {"grass","log","stone","coal","redstone","lapis","iron","gold","obsidian","diamond","emerald"};
+	public static String tierList[] = {"grass","log","stone","coal","redstone","lapis","iron","gold","obsidian","diamond","emerald"};
  	private static int grassValue, logValue, stoneValue, coalValue, redstoneValue, lapisValue, ironValue, goldValue, obsidianValue, diamondValue, emeraldValue;
 	private static double grassMult, logMult, stoneMult, coalMult, redstoneMult, lapisMult, ironMult, goldMult, obsidianMult, diamondMult, emeraldMult;
 	public static HashMap<String, Integer> tierValues = new HashMap<String, Integer>();
@@ -267,6 +267,7 @@ public class BlockBR{
 	public static void levelUpLevelAndTier() {
 		
 		int index;
+		Rewards r = new Rewards(plugin,player,tier,level);
 		
 		// Takes you to the next tier
 		for(int x = 0;x < tierList.length;x++) {
@@ -279,8 +280,11 @@ public class BlockBR{
 				Bukkit.broadcastMessage(Chat.blockBrChat("&l" + player.getName() + " &5has reached level &6") + String.valueOf(level));
 				player.sendMessage(Chat.blockBrChat("Congratulations! You have leveled up to level " + tier));
 				
-				Rewards.giveKey(player,lastTier,level);
-				Rewards.giveMoney(player, lastTier, level);
+				
+				
+				r.giveKey(player,lastTier,level);
+				r.giveMoney(player, lastTier, level);
+				
 				spawnFireWorks();
 				upgradeData(lastTier);
 				
@@ -293,8 +297,8 @@ public class BlockBR{
 					tier = tierList[x+1];
 					player.sendMessage(Chat.blockBrChat("Congratulations! You have gone up a tier. You are now on tier &l&6" + tier));
 					
-					Rewards.giveKey(player,lastTier,level);
-					Rewards.giveMoney(player, lastTier, level);
+					r.giveKey(player,lastTier,level);
+					r.giveMoney(player, lastTier, level);
 					
 					spawnFireWorks();
 					upgradeData(lastTier);

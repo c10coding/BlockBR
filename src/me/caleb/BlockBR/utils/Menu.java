@@ -20,10 +20,9 @@ public class Menu extends AbstractGui implements Listener, InventoryHolder{
 	
 	Material materialList[] = {Material.GRASS_BLOCK,Material.OAK_LOG,Material.STONE,Material.COAL_ORE,Material.REDSTONE_ORE,Material.LAPIS_ORE,Material.IRON_ORE,Material.GOLD_ORE,Material.OBSIDIAN,Material.DIAMOND_ORE,Material.EMERALD_ORE};
 	Material matTier;
-	public Main plugin;
 	
-	public Gui(Main plugin, String title, int numSlots) {
-		super(plugin,title,numSlots);
+	public Menu(Main plugin, String title, int numSlots, boolean blockbrchat) {
+		super(plugin,title,numSlots, blockbrchat);
 		Bukkit.getPluginManager().registerEvents(this,plugin);
 	}
 	
@@ -32,7 +31,7 @@ public class Menu extends AbstractGui implements Listener, InventoryHolder{
 		return inv;
 	}
 	
-	private ItemStack createGuiItem(Material material, String name, String...lore) {
+	public static ItemStack createGuiItem(Material material, String name, String...lore) {
 		
 		ItemStack item = new ItemStack(material,1);
 		ItemMeta meta = item.getItemMeta();
@@ -87,7 +86,7 @@ public class Menu extends AbstractGui implements Listener, InventoryHolder{
         inv.addItem(createGuiItem(matTier, Chat.chat("&lCurrent Tier"), "Your current tier is " + Chat.chat("&6" + tier.toUpperCase()), "The amount you must reach to get to the next tier is " + (int) threshold));
         inv.addItem(createGuiItem(Material.EXPERIENCE_BOTTLE, Chat.chat("&lLevel:" + "&6 " + level)));
         inv.addItem(createGuiItem(Material.WOODEN_PICKAXE, Chat.chat("&lAmount mined on current tier"), Chat.chat("&lAmount: " + amount)));
-        inv.addItem(createGuiItem(Material.CHEST, Chat.chat("&lPotential Rewards"), Chat.chat("&6These are rewards that your tier provides you")));
+        inv.addItem(createGuiItem(Material.CHEST, Chat.chat("&lPotential Rewards"), Chat.chat("&6Click me to see potential rewards for each tier!")));
         inv.addItem(createGuiItem(Material.BEACON, Chat.chat("&r&lTier list"), Chat.chat("&6Grass, Log, Stone, Coal, Redstone, Lapis, Iron, Gold, Obsidian, Diamond, Emerald")));
         
     }
@@ -114,11 +113,17 @@ public class Menu extends AbstractGui implements Listener, InventoryHolder{
 
         // verify current item is not null
         if (clickedItem == null || clickedItem.getType() == Material.AIR) return;
-
-        // Using slots click is a best option for your inventory click's
+        // If the Chest is clicked, bring up the rewards menu
         if (e.getRawSlot() == 3) {
+        	//Closes this current inventory
+        	if(plugin == null) {
+        		p.sendMessage("yea");
+        	}
         	p.closeInventory();
-        	RewardsGui g = new RewardsGui(plugin, "Rewards",9);
+        	RewardsMenu g = new RewardsMenu(plugin, "Rewards",18, true);
+        	GetInfo i = new GetInfo(plugin);
+        	i.getInfo(p);
+        	g.initializeItems(i.tier,i.amount,i.level,i.threshold);
         	g.openInventory(p);
         }
     }

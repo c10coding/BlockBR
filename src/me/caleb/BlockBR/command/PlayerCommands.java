@@ -13,8 +13,7 @@ import org.bukkit.entity.Player;
 import me.caleb.BlockBR.BlockBR;
 import me.caleb.BlockBR.Main;
 import me.caleb.BlockBR.utils.Chat;
-import me.caleb.BlockBR.utils.Gui;
-import me.caleb.BlockBR.utils.RewardsGui;
+import me.caleb.BlockBR.utils.Menu;
 
 public class PlayerCommands implements CommandExecutor{
 
@@ -38,7 +37,7 @@ public class PlayerCommands implements CommandExecutor{
 			
 			if(player.hasPermission("blockbr.use")) {		
 				if(args[0].equalsIgnoreCase("menu")) {
-					Gui g = new Gui(plugin, "Info",9);
+					Menu g = new Menu(plugin, "Info",9,true);
 					g.initializeItems(getTier(),getAmount(), getLevel(), getThreshold());
 					g.openInventory(player);
 				}else if(args[0].equalsIgnoreCase("help")) {
