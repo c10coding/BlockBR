@@ -273,15 +273,17 @@ public class BlockBR{
 		for(int x = 0;x < tierList.length;x++) {
 			//If this is the last tier
 			if(tier.equalsIgnoreCase(tierList[tierList.length-1])) {
-				//New Level
+				
 				String lastTier = tier;
+				int lastLevel = level;
+				//New Level
 				level++;
 				tier = "grass";
 				Bukkit.broadcastMessage(Chat.blockBrChat("&l" + player.getName() + " &5has reached level &6") + String.valueOf(level));
-				player.sendMessage(Chat.blockBrChat("Congratulations! You have leveled up to level " + tier));
+				player.sendMessage(Chat.blockBrChat("Congratulations! You have leveled up to level " + level + ". You are now back at tier &6" + tier));
 				
-				r.giveKey(player,lastTier,level);
-				r.giveMoney(player, lastTier, level);
+				r.giveKey(player,lastTier,lastLevel);
+				r.giveMoney(player, lastTier, lastLevel);
 				
 				spawnFireWorks();
 				upgradeData(lastTier);

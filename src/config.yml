@@ -1,9 +1,9 @@
 #MYSQL DATA
-Host: "51.81.5.51"
+Host: ""
 Port: 3306
-Database: "serverpro_db"
-Username: "root"
-Password: "Krni7YlzOK843lx"
+Database: ""
+Username: ""
+Password: ""
 
 #Broadcasting of messages
 Broadcast: true
@@ -18,10 +18,10 @@ StoneValue: 750
 CoalValue: 500
 IronValue: 200
 RedstoneValue: 100
-LapisValue: 30
+LapisValue: 50
 GoldValue: 15
 ObsidianValue: 10
-DiamondValue: 6
+DiamondValue: 13  
 EmeraldValue: 1
 
 
@@ -30,18 +30,17 @@ EmeraldValue: 1
 # If you change these values, it will affect levels 2 and on
 #
 
-GrassMult: 2
+GrassMult: 2.0
 LogMult: 1.5
-StoneMult: 2
+StoneMult: 2.0
 CoalMult: 1.5
-IronMult: 1.2
-RedstoneMult: 1.25
-LapisMult: 1.25
-GoldMult: 1.15
-ObsidianMult: 1.1
-DiamondMult: 1.05
-EmeraldMult: 1.01
-#
+IronMult: 1.5
+RedstoneMult: 1.5
+LapisMult: 1.5
+GoldMult: 2.0
+ObsidianMult: 2.0
+DiamondMult: 2.0
+EmeraldMult: 2.0
 # Multiplier for the money
 #
 MoneyMult: 2.0
