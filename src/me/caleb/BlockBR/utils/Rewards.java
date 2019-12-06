@@ -1,15 +1,25 @@
 package me.caleb.BlockBR.utils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import com.hazebyte.crate.api.CrateAPI;
 import com.hazebyte.crate.api.CratePlugin;
 import com.hazebyte.crate.api.crate.Crate;
+import com.hazebyte.crate.api.crate.CrateRegistrar;
 import com.hazebyte.crate.api.crate.CrateType;
 import com.hazebyte.crate.api.crate.reward.Reward;
 import com.hazebyte.crate.api.crate.reward.RewardLine;
@@ -36,13 +46,112 @@ public class Rewards {
 		int size = api.getCrateRegistrar().getCrate(tier+level+"Chest").getRewardSize();
 		ArrayList<String> rewardNames = new ArrayList<String>();
 		
+		String name = "";
+		
 		for(int x = 0; x < size;x++) {
-			String name = api.getCrateRegistrar().getCrate(tier+level+"Chest").getRewards().get(x).getDisplayItem().getType().name();
+			
+			// Fixes the error to where if there was an enchanted item with a custom name it didn't show the correct display name. Now it does
+			ItemMeta meta = api.getCrateRegistrar().getCrate(tier+level+"Chest").getRewards().get(x).getDisplayItem().getItemMeta();
+			
+			if(meta.getEnchants().isEmpty()) {
+				//If the item has no enchants, get the type name, make the first letter uppecase and the rest lowercase
+				//Then replace the underscores with spaces
+				name = api.getCrateRegistrar().getCrate(tier+level+"Chest").getRewards().get(x).getDisplayItem().getType().name();
+			}else {
+				//If the item has enchants
+				name = api.getCrateRegistrar().getCrate(tier+level+"Chest").getRewards().get(x).getDisplayItem().getItemMeta().getDisplayName();
+			}
+			
 			rewardNames.add(name);
 		}
 		
 		
 		return rewardNames;
+		
+	}
+	
+	// I need to do an array list inside an array list. Since an item can have multiple enchantments, i a 2d arraylist
+	/*
+	 * [
+	 * 	[Enchantment 1,Enchantment 2]
+	 * 	[Enchantment 1, Enchantment 2]
+	 * ]
+	 * 
+	 * 
+	 * 
+	 */
+	
+	public ArrayList<ArrayList<Enchantment>> getAllRewardsEnchants(String tier, int level){
+		
+		int size = api.getCrateRegistrar().getCrate(tier+level+"Chest").getRewardSize();
+		
+		ArrayList<ArrayList<Enchantment>> allRewardsEnchants =  new ArrayList<ArrayList<Enchantment>>(); 
+		
+		ArrayList<Enchantment> itemEnchants = new ArrayList<Enchantment>(); 
+		
+		Crate crate = api.getCrateRegistrar().getCrate(tier+level+"Chest");
+		
+		for(int x= 0; x < size ; x++) {
+			
+			Map<Enchantment,Integer> crateEnchants;
+			
+			ItemStack item = crate.getRewards().get(x).getDisplayItem();
+			
+			if(item.getItemMeta() instanceof EnchantmentStorageMeta) {
+				EnchantmentStorageMeta meta = (EnchantmentStorageMeta) item.getItemMeta();
+				crateEnchants = meta.getStoredEnchants();
+			}else {
+				crateEnchants = crate.getRewards().get(x).getDisplayItem().getEnchantments();;
+			}
+			
+			for(Entry<Enchantment, Integer> en : crateEnchants.entrySet()){
+				itemEnchants.add(en.getKey());
+			}
+			
+			allRewardsEnchants.add(itemEnchants);
+			itemEnchants = new ArrayList<Enchantment>();
+			
+			//Bukkit.broadcastMessage(allRewardsEnchants.toString());
+		}
+		
+		return allRewardsEnchants;
+		
+	}
+	
+	public ArrayList<ArrayList<Integer>> getAllRewardsEnchantmentLevels(String tier, int level){
+		
+		int size = api.getCrateRegistrar().getCrate(tier+level+"Chest").getRewardSize();
+		
+		ArrayList<ArrayList<Integer>> allRewardsLevels =  new ArrayList<ArrayList<Integer>>(); 
+		
+		ArrayList<Integer> itemLevels = new ArrayList<Integer>(); 
+		
+		Crate crate = api.getCrateRegistrar().getCrate(tier+level+"Chest");
+		
+		for(int x= 0; x < size ; x++) {
+			
+			Map<Enchantment,Integer> crateEnchants;
+			
+			ItemStack item = crate.getRewards().get(x).getDisplayItem();
+			
+			if(item.getItemMeta() instanceof EnchantmentStorageMeta) {
+				EnchantmentStorageMeta meta = (EnchantmentStorageMeta) item.getItemMeta();
+				crateEnchants = meta.getStoredEnchants();
+			}else {
+				crateEnchants = crate.getRewards().get(x).getDisplayItem().getEnchantments();
+			}
+			
+			for(Entry<Enchantment, Integer> en : crateEnchants.entrySet()){
+				itemLevels.add(en.getValue());
+			}
+			
+			allRewardsLevels.add(itemLevels);
+			itemLevels = new ArrayList<Integer>();
+			
+			//Bukkit.broadcastMessage(allRewardsLevels.toString());
+		}
+		
+		return allRewardsLevels;
 		
 	}
 	

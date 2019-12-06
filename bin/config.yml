@@ -66,4 +66,5 @@ EmeraldMoney: 1500
 #Help
 
 Help:
-- Do &6&l/bbr menu &5to bring up the menu
+- /bbr menu &5brings up the menu that allows you to see your level, tier, potential rewards, and the amount you have mined
+- /bbr help &5brings up these commands

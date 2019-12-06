@@ -1,9 +1,11 @@
 package me.caleb.BlockBR.utils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -12,6 +14,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import me.caleb.BlockBR.BlockBR;
@@ -43,7 +46,54 @@ public abstract class AbstractMenu implements Listener, InventoryHolder{
 		return inv;
 	}
 	
-	public static ItemStack createGuiItem(Material material, String name, int amount, String...lore) {
+	public static ItemStack createGuiItem(Material material, String name, ArrayList<Enchantment> e,ArrayList<Integer> l,int amount, String...lore) {
+		
+		ItemStack item = new ItemStack(material,1);
+		ItemMeta meta = item.getItemMeta();
+		
+		for(int x = 0;x < e.size(); x++) {
+			
+			try {
+				
+				if(!item.getType().equals(Material.NETHER_STAR)) {
+					meta.addEnchant(e.get(x), l.get(x),true);
+				}else if(item.getType().equals(Material.ENCHANTED_BOOK)) {
+					EnchantmentStorageMeta metaE = (EnchantmentStorageMeta) item.getItemMeta();
+					metaE.addStoredEnchant(e.get(x), l.get(x), true);
+					item.setItemMeta(metaE);
+					//metaE.addStoredEnchant(e.get(x), l.get(x), )
+				}
+				
+			}catch(NullPointerException n) {
+				//Bukkit.broadcastMessage("Its null!");
+			}catch(IllegalArgumentException i) {
+				//Bukkit.broadcastMessage("Enchant is null!");
+			}
+			
+			
+		}
+		
+		
+		meta.setDisplayName(name);
+		item.setAmount(amount);
+		
+		ArrayList<String> metaLore = new ArrayList<String>();
+		
+		for(String lorecomments : lore) {
+			
+			metaLore.add(lorecomments);
+			
+		}
+		
+		if(!item.getType().equals(Material.ENCHANTED_BOOK)) {
+			meta.setLore(metaLore);
+			item.setItemMeta(meta);
+		}
+		
+		return item;
+		
+	}
+	public static ItemStack createGuiItem(Material material, String name,int amount, String...lore) {
 		
 		ItemStack item = new ItemStack(material,1);
 		ItemMeta meta = item.getItemMeta();

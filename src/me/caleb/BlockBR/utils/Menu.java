@@ -1,9 +1,11 @@
 package me.caleb.BlockBR.utils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -35,6 +37,8 @@ public class Menu extends AbstractMenu implements Listener, InventoryHolder{
 		
 		ItemStack item = new ItemStack(material,1);
 		ItemMeta meta = item.getItemMeta();
+		meta.getEnchants();
+		
 		meta.setDisplayName(name);
 		
 		ArrayList<String> metaLore = new ArrayList<String>();
