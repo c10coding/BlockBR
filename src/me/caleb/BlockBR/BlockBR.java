@@ -276,10 +276,24 @@ public class BlockBR{
 				
 				String lastTier = tier;
 				int lastLevel = level;
-				//New Level
+				
+				Boolean broadcast;
+				// Try to get the config value broadcast. If it's not set, then set it to false
+				
+				try {
+					broadcast = plugin.getConfig().getBoolean("Broadcast");
+				}catch(NullPointerException e) {
+					broadcast = false;
+				}
+
+				//New Level and tier is set back to grass
 				level++;
 				tier = "grass";
-				Bukkit.broadcastMessage(Chat.blockBrChat("&l" + player.getName() + " &5has reached level &6") + String.valueOf(level));
+				
+				if(broadcast.equals(true)) {
+					Bukkit.broadcastMessage(Chat.blockBrChat("&l" + player.getName() + " &5has reached level &6") + String.valueOf(level));
+				}
+				
 				player.sendMessage(Chat.blockBrChat("Congratulations! You have leveled up to level " + level + ". You are now back at tier &6" + tier));
 				
 				r.giveKey(player,lastTier,lastLevel);
