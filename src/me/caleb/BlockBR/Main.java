@@ -5,8 +5,13 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import org.bukkit.Bukkit;
+import org.bukkit.World;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.protection.managers.RegionManager;
 
 import me.caleb.BlockBR.command.PlayerCommands;
 import me.caleb.BlockBR.listener.BlockMeta;
@@ -81,6 +86,14 @@ public class Main extends JavaPlugin{
 		return connection;
 	}
 	
+	public WorldGuardPlugin getWorldGuard() {
+		Plugin p = Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
+		
+		if(p instanceof WorldGuardPlugin) return (WorldGuardPlugin) p;
+		else return null;
+		
+	}
+	
 	@Override
 	public void onDisable() {
 		
@@ -110,5 +123,6 @@ public class Main extends JavaPlugin{
 	    }
 	    
 	}
+
 	
 }
