@@ -30,11 +30,7 @@ public class Main extends JavaPlugin{
 	@Override
 	public void onEnable() {
 		
-		if (!setupEconomy()) {
-            this.getLogger().severe("Disabled due to no Vault dependency found!");
-            Bukkit.getPluginManager().disablePlugin(this);
-            return;
-        }
+		setupEconomy();
 		
 		mysqlSetup();
 		loadConfig();
