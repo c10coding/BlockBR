@@ -64,7 +64,6 @@ public class BlockMeta implements Listener{
 		boolean q = w.createProtectionQuery().testBlockBreak(event, block);
 		
 		if(q) {
-			player.sendMessage("You have broken a block! while outside of a wg region");
 			try {
 				String noBuildReason = GriefPrevention.instance.allowBreak(player, block, block.getLocation(), event);
 				//null = they can build

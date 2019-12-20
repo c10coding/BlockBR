@@ -16,7 +16,6 @@ import com.hazebyte.crate.api.util.ItemBuilder;
 
 import me.caleb.BlockBR.Main;
 import me.caleb.BlockBR.utils.Chat;
-import net.minecraft.server.v1_13_R2.Material;
 
 public class CrateDealer {
 	
